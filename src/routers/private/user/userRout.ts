@@ -1,9 +1,14 @@
 import express from 'express';
+import { upload } from "../../../middleware/upload";
+import { authMiddleware } from "../../../middleware/authMiddleware";
 import userController from '../../../controller/user/userController';
 
-const routerUser = express.Router();
 
-routerUser.post('/criar-usuario', userController.createUser);
-routerUser.post('/login', userController.loginUser)
+const routUserPrivate = express.Router();
 
-export default routerUser;
+routUserPrivate.post('/upload-imagem', authMiddleware, upload.single("imagem"),userController.ulploadImagemUser);
+
+
+export default routUserPrivate;
+
+

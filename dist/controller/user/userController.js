@@ -13,7 +13,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const userModel_1 = require("../../model/user/userModel");
-//import { Jwt } from "jsonwebtoken";
+const userMolPhoto_1 = require("../../model/user/userMolPhoto");
 const jwt_1 = require("../../auth/jwt");
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
 class User {
@@ -62,6 +62,43 @@ class User {
             catch (error) {
                 return res.status(500).json({
                     message: "Erro de login",
+                    error
+                });
+            }
+        });
+        //Carregar imagem do usuário 
+        this.ulploadImagemUser = (req, res) => __awaiter(this, void 0, void 0, function* () {
+            try {
+                const userId = req.user.id;
+                const file = req.file;
+                if (!file) {
+                    return res.status(400).json({
+                        message: "Imagem não enviada"
+                    });
+                }
+                // 🔥 1. VERIFICAR SE JÁ EXISTE FOTO
+                const existingPhoto = yield userMolPhoto_1.imageModel.findOne({
+                    user: userId
+                });
+                if (existingPhoto) {
+                    return res.status(400).json({
+                        message: "Já existe uma foto de perfil. Apague ou atualize a existente antes de adicionar outra."
+                    });
+                }
+                // 🔥 2. SALVAR NOVA FOTO
+                const image = yield userMolPhoto_1.imageModel.create({
+                    nome: file.filename,
+                    caminho: file.path,
+                    user: userId
+                });
+                return res.status(201).json({
+                    message: "Foto de perfil carregada com sucesso",
+                    image
+                });
+            }
+            catch (error) {
+                return res.status(500).json({
+                    message: "Erro no upload",
                     error
                 });
             }

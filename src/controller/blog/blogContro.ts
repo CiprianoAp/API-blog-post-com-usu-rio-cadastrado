@@ -8,8 +8,6 @@ class Blog {
 
         const { title, author, body, userId } = req.body
 
-        console.log(req.body)
-
         try {
 
             const dados = new blogModel({

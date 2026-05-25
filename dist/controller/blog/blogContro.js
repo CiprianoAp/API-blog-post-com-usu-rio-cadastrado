@@ -15,7 +15,6 @@ class Blog {
         //Criar post
         this.createPost = (req, res) => __awaiter(this, void 0, void 0, function* () {
             const { title, author, body, userId } = req.body;
-            console.log(req.body);
             try {
                 const dados = new blogModel_1.blogModel({
                     title,

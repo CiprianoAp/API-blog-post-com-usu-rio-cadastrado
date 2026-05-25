@@ -1,9 +1,8 @@
 import { Express, Request, Response } from "express";
 import { userModel } from "../../model/user/userModel";
-//import { Jwt } from "jsonwebtoken";
+import { imageModel } from "../../model/user/userMolPhoto";
 import { generateToken } from "../../auth/jwt";
 import bcript from 'bcryptjs';
-
 
 class User {
 
@@ -75,6 +74,57 @@ class User {
                 error
             });
         }
+    };
+
+    //Carregar imagem do usuário 
+
+    ulploadImagemUser = async (req: Request, res: Response) => {
+        try {
+
+            const userId = (req as any).user.id;
+
+            const file = req.file;
+
+            if (!file) {
+                return res.status(400).json({
+                    message: "Imagem não enviada"
+                });
+            }
+
+            // 🔥 1. VERIFICAR SE JÁ EXISTE FOTO
+            const existingPhoto = await imageModel.findOne({
+                user: userId
+            });
+
+            if (existingPhoto) {
+
+                return res.status(400).json({
+                    message: "Já existe uma foto de perfil. Apague ou atualize a existente antes de adicionar outra."
+                });
+            }
+
+            // 🔥 2. SALVAR NOVA FOTO
+            const image = await imageModel.create({
+
+                nome: file.filename,
+                caminho: file.path,
+                user: userId
+
+            });
+
+            return res.status(201).json({
+                message: "Foto de perfil carregada com sucesso",
+                image
+            });
+
+        } catch (error) {
+
+            return res.status(500).json({
+                message: "Erro no upload",
+                error
+            });
+        }
+
     };
 
 }

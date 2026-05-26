@@ -43,8 +43,8 @@ class Blog {
             return res.status(200).json({ post: blog })
 
         } catch (error) {
-
-            return res.status(400).json({ erro: "error ao listar " + error })
+            
+            return res.status(400).json({ erro: "error ao listar ", tipo_erro: error })
         }
     }
 

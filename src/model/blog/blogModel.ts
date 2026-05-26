@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+
 const schemaBlog = new mongoose.Schema({
     title:{
         type: String, 

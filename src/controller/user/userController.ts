@@ -76,6 +76,21 @@ class User {
         }
     };
 
+
+    //Listar todos os usuários
+    listarUsuario = async (req: Request, res: Response) => {
+        try {
+
+            const usuarios = await imageModel.find().populate('user', 'nome caminho nome email');
+            return res.status(200).json({ mensagem: "Todos os usuario", alluser: usuarios })
+
+        } catch (error) {
+
+           return res.status(400).json({ erro: "Erro ao listar ", tipo_erro: error })
+
+        }
+    }
+
     //Carregar imagem do usuário 
 
     ulploadImagemUser = async (req: Request, res: Response) => {

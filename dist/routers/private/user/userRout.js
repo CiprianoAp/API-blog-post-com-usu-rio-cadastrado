@@ -9,5 +9,6 @@ const authMiddleware_1 = require("../../../middleware/authMiddleware");
 const userController_1 = __importDefault(require("../../../controller/user/userController"));
 const routUserPrivate = express_1.default.Router();
 routUserPrivate.post('/upload-imagem', authMiddleware_1.authMiddleware, upload_1.upload.single("imagem"), userController_1.default.ulploadImagemUser);
+routUserPrivate.get('/listar-all-user', authMiddleware_1.authMiddleware, userController_1.default.listarUsuario);
 exports.default = routUserPrivate;
 //# sourceMappingURL=userRout.js.map

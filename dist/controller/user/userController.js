@@ -66,6 +66,16 @@ class User {
                 });
             }
         });
+        //Listar todos os usuários
+        this.listarUsuario = (req, res) => __awaiter(this, void 0, void 0, function* () {
+            try {
+                const usuarios = yield userMolPhoto_1.imageModel.find().populate('user', 'nome caminho nome email');
+                return res.status(200).json({ mensagem: "Todos os usuario", alluser: usuarios });
+            }
+            catch (error) {
+                return res.status(400).json({ erro: "Erro ao listar ", tipo_erro: error });
+            }
+        });
         //Carregar imagem do usuário 
         this.ulploadImagemUser = (req, res) => __awaiter(this, void 0, void 0, function* () {
             try {

@@ -18,7 +18,7 @@ class User {
 
         if (exitEmail) {
 
-            return res.status(400).json({ messagem: `O email ${exitEmail} já existe` })
+            return res.status(400).json({ messagem: `usuário existente com este email ${email}` })
 
         }
 
@@ -46,11 +46,15 @@ class User {
 
         //Inicio zod
         const createEventeLogin = z.object({
-            email: z.string({error: "email é obrigatório"})
+            email: z.string({ error: "email é obrigatório" })
                 .min(10, "email: deve conter nomino 10 caracteres")
                 .email("formato do email invalido")
                 .max(255, "email: deve conter no máximo 255 caracteres"),
-            senha: z.string({error: "senha obrigatória"})
+            senha: z.string({ error: "senha obrigatória" })
+                .regex(/[A-Z]/, "Deve conter uma letra maiúscula")
+                .regex(/[a-z]/, "Deve conter uma letra minúscula")
+                .regex(/[0-9]/, "Deve conter um número")
+                .regex(/[^A-Za-z0-9]/, "Deve conter um caractere especial")
                 .min(8, "senha: deve conter no mino 8 caracteres")
                 .max(40, "senha deve conter no minimo 40 caracteres")
         })
@@ -64,7 +68,6 @@ class User {
                 message: data.error.issues[0].message
             });
         }
-
         //Fim zod
         const { email, senha } = req.body;
 

@@ -8,6 +8,7 @@ const routUserPrivate = express.Router();
 routUserPrivate.post('/upload-imagem', authMiddleware, upload.single("imagem"), userController.ulploadImagemUser);
 routUserPrivate.get('/listar-all-user', authMiddleware, userController.listarUsuario);
 routUserPrivate.put('/update-imagem', authMiddleware, upload.single("imagem"), userController.updateImagemUser);
+routUserPrivate.delete('/deletar-imagem', authMiddleware, userController.deletePhotoPerfil);
 
 export default routUserPrivate;
 

@@ -14,6 +14,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const userModel_1 = require("../../model/user/userModel");
 const userMolPhoto_1 = require("../../model/user/userMolPhoto");
+const fs_1 = __importDefault(require("fs"));
 const jwt_1 = require("../../auth/jwt");
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
 class User {
@@ -113,6 +114,7 @@ class User {
                 });
             }
         });
+        //Atualizar a photo de perfil
         this.updateImagemUser = (req, res) => __awaiter(this, void 0, void 0, function* () {
             try {
                 const userId = req.user.id;
@@ -147,6 +149,34 @@ class User {
             catch (error) {
                 return res.status(500).json({
                     message: "Erro ao atualizar imagem",
+                    error
+                });
+            }
+        });
+        // Eliminar a foto de perfil
+        this.deletePhotoPerfil = (req, res) => __awaiter(this, void 0, void 0, function* () {
+            try {
+                const userId = req.user.id;
+                //BUSCAR IMAGEM DO USER
+                const image = yield userMolPhoto_1.imageModel.findOne({ user: userId });
+                if (!image) {
+                    return res.status(404).json({
+                        message: "Nenhuma imagem encontrada"
+                    });
+                }
+                //APAGAR FICHEIRO DO DIRETÓRIO
+                if (fs_1.default.existsSync(image.caminho)) {
+                    fs_1.default.unlinkSync(image.caminho);
+                }
+                //APAGAR DA BASE DE DADOS
+                yield userMolPhoto_1.imageModel.deleteOne({ user: userId });
+                return res.status(200).json({
+                    message: "Imagem de perfil eliminada com sucesso"
+                });
+            }
+            catch (error) {
+                return res.status(500).json({
+                    message: "Erro ao eliminar imagem",
                     error
                 });
             }

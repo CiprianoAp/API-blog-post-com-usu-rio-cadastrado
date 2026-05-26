@@ -11,5 +11,6 @@ const routUserPrivate = express_1.default.Router();
 routUserPrivate.post('/upload-imagem', authMiddleware_1.authMiddleware, upload_1.upload.single("imagem"), userController_1.default.ulploadImagemUser);
 routUserPrivate.get('/listar-all-user', authMiddleware_1.authMiddleware, userController_1.default.listarUsuario);
 routUserPrivate.put('/update-imagem', authMiddleware_1.authMiddleware, upload_1.upload.single("imagem"), userController_1.default.updateImagemUser);
+routUserPrivate.delete('/deletar-imagem', authMiddleware_1.authMiddleware, userController_1.default.deletePhotoPerfil);
 exports.default = routUserPrivate;
 //# sourceMappingURL=userRout.js.map

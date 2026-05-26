@@ -1,6 +1,7 @@
 import { Express, Request, Response } from "express";
 import { userModel } from "../../model/user/userModel";
 import { imageModel } from "../../model/user/userMolPhoto";
+import fs from "fs";
 import { generateToken } from "../../auth/jwt";
 import bcript from 'bcryptjs';
 
@@ -135,7 +136,7 @@ class User {
         }
 
     };
-
+    //Atualizar a photo de perfil
     updateImagemUser = async (req: Request, res: Response) => {
         try {
             const userId = (req as any).user.id;
@@ -185,6 +186,39 @@ class User {
             });
         }
     };
+    // Eliminar a foto de perfil
+    deletePhotoPerfil = async (req: Request, res: Response) => {
+        try {
+            const userId = (req as any).user.id;
+
+            //BUSCAR IMAGEM DO USER
+            const image = await imageModel.findOne({ user: userId });
+
+            if (!image) {
+                return res.status(404).json({
+                    message: "Nenhuma imagem encontrada"
+                });
+            }
+
+            //APAGAR FICHEIRO DO DIRETÓRIO
+            if (fs.existsSync(image.caminho)) {
+                fs.unlinkSync(image.caminho);
+            }
+
+            //APAGAR DA BASE DE DADOS
+            await imageModel.deleteOne({ user: userId });
+
+            return res.status(200).json({
+                message: "Imagem de perfil eliminada com sucesso"
+            });
+
+        } catch (error) {
+            return res.status(500).json({
+                message: "Erro ao eliminar imagem",
+                error
+            });
+        }
+    }
 }
 
 export default new User;

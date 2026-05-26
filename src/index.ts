@@ -7,9 +7,12 @@ import todasRotas from './routers/index';
 dotenv.config();
 const app = express();
 app.use(express.json());
-app.use(cors);
+app.use(cors());
 Conex.conn();
 app.use('/', todasRotas)
+
+
+export default app;
 
 
 

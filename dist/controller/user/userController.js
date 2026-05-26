@@ -205,6 +205,10 @@ class User {
                 });
             }
         });
+        //Rota inicial
+        this.inicia = (req, res) => __awaiter(this, void 0, void 0, function* () {
+            return yield res.status(200).json({ mensagem: "Bem vindo a API blog" });
+        });
     }
 }
 exports.default = new User;

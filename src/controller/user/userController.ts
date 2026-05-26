@@ -92,7 +92,6 @@ class User {
     }
 
     //Carregar imagem do usuário 
-
     ulploadImagemUser = async (req: Request, res: Response) => {
         try {
 

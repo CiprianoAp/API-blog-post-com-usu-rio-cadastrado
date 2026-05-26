@@ -52,10 +52,10 @@ class User {
                     .email("formato do email invalido")
                     .max(255, "email: deve conter no máximo 255 caracteres"),
                 senha: zod_1.z.string({ error: "senha obrigatória" })
-                    .regex(/[A-Z]/, "Deve conter uma letra maiúscula")
-                    .regex(/[a-z]/, "Deve conter uma letra minúscula")
-                    .regex(/[0-9]/, "Deve conter um número")
-                    .regex(/[^A-Za-z0-9]/, "Deve conter um caractere especial")
+                    //.regex(/[A-Z]/, "Deve conter uma letra maiúscula")
+                    //.regex(/[a-z]/, "Deve conter uma letra minúscula")
+                    // .regex(/[0-9]/, "Deve conter um número")
+                    // .regex(/[^A-Za-z0-9]/, "Deve conter um caractere especial")
                     .min(8, "senha: deve conter no mino 8 caracteres")
                     .max(40, "senha deve conter no minimo 40 caracteres")
             });

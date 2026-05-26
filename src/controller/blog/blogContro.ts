@@ -2,7 +2,6 @@ import { Request, Response } from 'express';
 import { blogModel } from '../../model/blog/blogModel';
 
 class Blog {
-
     //Criar post
     createPost = async (req: Request, res: Response) => {
 
@@ -33,7 +32,7 @@ class Blog {
 
 
     }
-
+    
     //Listar os postes com seus atores
     listPost = async (require: Request, res: Response) => {
         try {
@@ -43,11 +42,10 @@ class Blog {
             return res.status(200).json({ post: blog })
 
         } catch (error) {
-            
+
             return res.status(400).json({ erro: "error ao listar ", tipo_erro: error })
         }
     }
-
 }
 
 export default new Blog;

@@ -5,7 +5,6 @@ import { generateToken } from "../../auth/jwt";
 import bcript from 'bcryptjs';
 
 class User {
-
     //Criar usuário
     createUser = async (req: Request, res: Response) => {
 
@@ -40,7 +39,6 @@ class User {
 
         }
     }
-
     //Fazer login
     loginUser = async (req: Request, res: Response) => {
 
@@ -75,8 +73,6 @@ class User {
             });
         }
     };
-
-
     //Listar todos os usuários
     listarUsuario = async (req: Request, res: Response) => {
         try {
@@ -86,11 +82,10 @@ class User {
 
         } catch (error) {
 
-           return res.status(400).json({ erro: "Erro ao listar ", tipo_erro: error })
+            return res.status(400).json({ erro: "Erro ao listar ", tipo_erro: error })
 
         }
     }
-
     //Carregar imagem do usuário 
     ulploadImagemUser = async (req: Request, res: Response) => {
         try {
@@ -141,6 +136,55 @@ class User {
 
     };
 
+    updateImagemUser = async (req: Request, res: Response) => {
+        try {
+            const userId = (req as any).user.id;
+            const file = req.file;
+
+            if (!file) {
+                return res.status(400).json({
+                    message: "Imagem não enviada"
+                });
+            }
+
+            //BUSCAR FOTO EXISTENTE
+            const existingPhoto = await imageModel.findOne({ user: userId });
+
+            if (!existingPhoto) {
+                return res.status(404).json({
+                    message: "Nenhuma foto encontrada para atualizar"
+                });
+            }
+
+            //APAGAR FICHEIRO ANTIGO
+            const fs = require("fs");
+
+            if (fs.existsSync(existingPhoto.caminho)) {
+                fs.unlinkSync(existingPhoto.caminho);
+            }
+
+            //3. UPDATE NO BANCO
+            const updated = await imageModel.findOneAndUpdate(
+                { user: userId },
+                {
+                    nome: file.filename,
+                    caminho: file.path
+                },
+                { new: true }
+            );
+
+            return res.status(200).json({
+                message: "Imagem atualizada com sucesso",
+                image: updated
+            });
+
+        } catch (error) {
+            return res.status(500).json({
+                message: "Erro ao atualizar imagem",
+                error
+            });
+        }
+    };
 }
 
 export default new User;

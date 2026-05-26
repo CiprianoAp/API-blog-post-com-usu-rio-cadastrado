@@ -113,6 +113,44 @@ class User {
                 });
             }
         });
+        this.updateImagemUser = (req, res) => __awaiter(this, void 0, void 0, function* () {
+            try {
+                const userId = req.user.id;
+                const file = req.file;
+                if (!file) {
+                    return res.status(400).json({
+                        message: "Imagem não enviada"
+                    });
+                }
+                //BUSCAR FOTO EXISTENTE
+                const existingPhoto = yield userMolPhoto_1.imageModel.findOne({ user: userId });
+                if (!existingPhoto) {
+                    return res.status(404).json({
+                        message: "Nenhuma foto encontrada para atualizar"
+                    });
+                }
+                //APAGAR FICHEIRO ANTIGO
+                const fs = require("fs");
+                if (fs.existsSync(existingPhoto.caminho)) {
+                    fs.unlinkSync(existingPhoto.caminho);
+                }
+                //3. UPDATE NO BANCO
+                const updated = yield userMolPhoto_1.imageModel.findOneAndUpdate({ user: userId }, {
+                    nome: file.filename,
+                    caminho: file.path
+                }, { new: true });
+                return res.status(200).json({
+                    message: "Imagem atualizada com sucesso",
+                    image: updated
+                });
+            }
+            catch (error) {
+                return res.status(500).json({
+                    message: "Erro ao atualizar imagem",
+                    error
+                });
+            }
+        });
     }
 }
 exports.default = new User;

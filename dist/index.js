@@ -11,8 +11,8 @@ const index_1 = __importDefault(require("./routers/index"));
 dotenv_1.default.config();
 const app = (0, express_1.default)();
 app.use(express_1.default.json());
-app.use(cors_1.default);
+app.use((0, cors_1.default)());
 api_1.default.conn();
 app.use('/', index_1.default);
-//app.listen(process.env.PORT_SERVER, () => console.log(`Server OKAY, PORT_SRV = ${process.env.PORT_SERVER}`));
+exports.default = app;
 //# sourceMappingURL=index.js.map

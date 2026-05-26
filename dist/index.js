@@ -14,5 +14,5 @@ app.use(express_1.default.json());
 app.use(cors_1.default);
 api_1.default.conn();
 app.use('/', index_1.default);
-app.listen(process.env.PORT_SERVER, () => console.log(`Server OKAY, PORT_SRV = ${process.env.PORT_SERVER}`));
+//app.listen(process.env.PORT_SERVER, () => console.log(`Server OKAY, PORT_SRV = ${process.env.PORT_SERVER}`));
 //# sourceMappingURL=index.js.map

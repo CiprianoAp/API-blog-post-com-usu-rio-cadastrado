@@ -11,5 +11,5 @@ app.use(cors);
 Conex.conn();
 app.use('/', todasRotas)
 
-app.listen(process.env.PORT_SERVER, () => console.log(`Server OKAY, PORT_SRV = ${process.env.PORT_SERVER}`));
+//app.listen(process.env.PORT_SERVER, () => console.log(`Server OKAY, PORT_SRV = ${process.env.PORT_SERVER}`));
 

@@ -15,6 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const userModel_1 = require("../../model/user/userModel");
 const userMolPhoto_1 = require("../../model/user/userMolPhoto");
 const fs_1 = __importDefault(require("fs"));
+const zod_1 = require("zod");
 const jwt_1 = require("../../auth/jwt");
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
 class User {
@@ -44,6 +45,25 @@ class User {
         });
         //Fazer login
         this.loginUser = (req, res) => __awaiter(this, void 0, void 0, function* () {
+            //Inicio zod
+            const createEventeLogin = zod_1.z.object({
+                email: zod_1.z.string({ error: "email é obrigatório" })
+                    .min(10, "email: deve conter nomino 10 caracteres")
+                    .email("formato do email invalido")
+                    .max(255, "email: deve conter no máximo 255 caracteres"),
+                senha: zod_1.z.string({ error: "senha obrigatória" })
+                    .min(8, "senha: deve conter no mino 8 caracteres")
+                    .max(40, "senha deve conter no minimo 40 caracteres")
+            });
+            //Pegar dados do body e implementar a verificação
+            const data = createEventeLogin.safeParse(req.body);
+            //Verificar  e retornar erro caso tiver no zod
+            if (!data.success) {
+                return res.status(400).json({
+                    message: data.error.issues[0].message
+                });
+            }
+            //Fim zod
             const { email, senha } = req.body;
             try {
                 const dados = yield userModel_1.userModel.findOne({ email });

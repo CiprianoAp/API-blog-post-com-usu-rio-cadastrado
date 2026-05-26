@@ -1,7 +1,8 @@
-import { Express, Request, Response } from "express";
+import { Request, Response } from "express";
 import { userModel } from "../../model/user/userModel";
 import { imageModel } from "../../model/user/userMolPhoto";
 import fs from "fs";
+import { z } from 'zod';
 import { generateToken } from "../../auth/jwt";
 import bcript from 'bcryptjs';
 
@@ -43,6 +44,28 @@ class User {
     //Fazer login
     loginUser = async (req: Request, res: Response) => {
 
+        //Inicio zod
+        const createEventeLogin = z.object({
+            email: z.string({error: "email é obrigatório"})
+                .min(10, "email: deve conter nomino 10 caracteres")
+                .email("formato do email invalido")
+                .max(255, "email: deve conter no máximo 255 caracteres"),
+            senha: z.string({error: "senha obrigatória"})
+                .min(8, "senha: deve conter no mino 8 caracteres")
+                .max(40, "senha deve conter no minimo 40 caracteres")
+        })
+
+        //Pegar dados do body e implementar a verificação
+        const data = createEventeLogin.safeParse(req.body)
+
+        //Verificar  e retornar erro caso tiver no zod
+        if (!data.success) {
+            return res.status(400).json({
+                message: data.error.issues[0].message
+            });
+        }
+
+        //Fim zod
         const { email, senha } = req.body;
 
         try {

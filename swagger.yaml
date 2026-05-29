@@ -1,0 +1,18 @@
+openapi: 3.0.0
+
+info:
+  title: Minha API
+  version: 1.0.0
+  description: Documentação da API
+
+servers:
+  - url: http://localhost:3000
+
+paths:
+  /usuarios:
+    get:
+      summary: Lista usuários
+
+      responses:
+        '200':
+          description: OK

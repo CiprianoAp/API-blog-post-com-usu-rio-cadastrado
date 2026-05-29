@@ -7,32 +7,40 @@ class Blog {
 
         const { title, author, body, userId } = req.body
 
-        try {
+        const validate = blogModel.findById(userId);
 
-            const dados = new blogModel({
-                title,
-                author,
-                body,
-                user: userId
-            });
+        if (!validate) {
 
-            await dados.save();
+            res.status(429).json({ mensagem: "Id usuário não encontrado" })
+        } else {
+            try {
 
-            return res.status(201).json({ menagem: "Post criado com sucesso" })
+                const dados = new blogModel({
+                    title,
+                    author,
+                    body,
+                    user: userId
+                });
+
+                await dados.save();
+
+                return res.status(201).json({ menagem: "Post criado com sucesso" })
 
 
-        } catch (error) {
+            } catch (error) {
 
-            return res.status(500).json({
-                erro: error,
-                mensagem: "Erro ao cadastrar",
-            });
+                return res.status(500).json({
+                    mensagem: "Erro ao cadastrar",
+                });
+            }
         }
 
 
 
+
+
     }
-    
+
     //Listar os postes com seus atores
     listPost = async (require: Request, res: Response) => {
         try {

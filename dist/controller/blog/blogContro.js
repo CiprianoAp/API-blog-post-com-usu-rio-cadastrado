@@ -15,21 +15,26 @@ class Blog {
         //Criar post
         this.createPost = (req, res) => __awaiter(this, void 0, void 0, function* () {
             const { title, author, body, userId } = req.body;
-            try {
-                const dados = new blogModel_1.blogModel({
-                    title,
-                    author,
-                    body,
-                    user: userId
-                });
-                yield dados.save();
-                return res.status(201).json({ menagem: "Post criado com sucesso" });
+            const validate = blogModel_1.blogModel.findOne({ userId });
+            if (!validate) {
+                res.status(409).json({ mensagem: "Impossivel fazer postagem, Id usuário não encontrado" });
             }
-            catch (error) {
-                return res.status(500).json({
-                    erro: error,
-                    mensagem: "Erro ao cadastrar",
-                });
+            else {
+                try {
+                    const dados = new blogModel_1.blogModel({
+                        title,
+                        author,
+                        body,
+                        user: userId
+                    });
+                    yield dados.save();
+                    return res.status(201).json({ menagem: "Post criado com sucesso" });
+                }
+                catch (error) {
+                    return res.status(500).json({
+                        mensagem: "Erro ao cadastrar",
+                    });
+                }
             }
         });
         //Listar os postes com seus atores

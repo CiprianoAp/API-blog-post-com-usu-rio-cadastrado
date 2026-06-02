@@ -7,11 +7,14 @@ class Blog {
 
         const { title, author, body, userId } = req.body
 
-        const validate = blogModel.findById(userId);
+        const validate  = blogModel.findOne({ userId });
+
+   
 
         if (!validate) {
 
-            res.status(429).json({ mensagem: "Impossivel fazer postagem, Id usuário não encontrado" })
+            res.status(409).json({ mensagem: "Impossivel fazer postagem, Id usuário não encontrado" });
+
         } else {
             try {
 

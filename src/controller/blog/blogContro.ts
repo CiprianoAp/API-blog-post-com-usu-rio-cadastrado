@@ -13,7 +13,7 @@ class Blog {
 
         if (!validate) {
 
-            res.status(409).json({ mensagem: "Impossivel fazer postagem, Id usuário não encontrado" });
+          return res.status(409).json({ mensagem: "Impossivel fazer postagem, Id usuário não encontrado" });
 
         } else {
             try {

@@ -14,7 +14,8 @@ class Blog {
             return res.status(409).json({ mensagem: "Codigo de usuário inválido" })
         }
 
-        const validate = await userModel.findOne({ userId });
+
+         const validate = await userModel.findOne({ _id: userId });
 
         if (!validate) {
 

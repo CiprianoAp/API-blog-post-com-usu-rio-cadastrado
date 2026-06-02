@@ -23,7 +23,7 @@ class Blog {
             if (!mongoose_1.default.Types.ObjectId.isValid(userId)) {
                 return res.status(409).json({ mensagem: "Codigo de usuário inválido" });
             }
-            const validate = yield userModel_1.userModel.findOne({ userId });
+            const validate = yield userModel_1.userModel.findOne({ _id: userId });
             if (!validate) {
                 return res.status(409).json({ mensagem: "Impossivel fazer postagem, Id usuário não encontrado" });
             }

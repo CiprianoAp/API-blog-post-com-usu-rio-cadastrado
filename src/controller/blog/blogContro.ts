@@ -1,5 +1,7 @@
 import { Request, Response } from 'express';
 import { blogModel } from '../../model/blog/blogModel';
+import { userModel } from '../../model/user/userModel';
+import mongoose from 'mongoose';
 
 class Blog {
     //Criar post
@@ -7,13 +9,15 @@ class Blog {
 
         const { title, author, body, userId } = req.body
 
-        const validate  = blogModel.findOne({ userId });
+        const validate = await userModel.findOne({ userId });
 
-   
+        if (!mongoose.Types.ObjectId.isValid(userId)) {
+            return res.status(409).json({ mensagem: "Codigo de usuário inválido" })
+        }
 
         if (!validate) {
 
-          return res.status(409).json({ mensagem: "Impossivel fazer postagem, Id usuário não encontrado" });
+            return res.status(409).json({ mensagem: "Impossivel fazer postagem, Id usuário não encontrado" });
 
         } else {
             try {

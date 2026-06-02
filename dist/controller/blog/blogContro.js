@@ -8,14 +8,22 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const blogModel_1 = require("../../model/blog/blogModel");
+const userModel_1 = require("../../model/user/userModel");
+const mongoose_1 = __importDefault(require("mongoose"));
 class Blog {
     constructor() {
         //Criar post
         this.createPost = (req, res) => __awaiter(this, void 0, void 0, function* () {
             const { title, author, body, userId } = req.body;
-            const validate = blogModel_1.blogModel.findOne({ userId });
+            const validate = yield userModel_1.userModel.findOne({ userId });
+            if (!mongoose_1.default.Types.ObjectId.isValid(userId)) {
+                return res.status(409).json({ mensagem: "Codigo de usuário inválido" });
+            }
             if (!validate) {
                 return res.status(409).json({ mensagem: "Impossivel fazer postagem, Id usuário não encontrado" });
             }

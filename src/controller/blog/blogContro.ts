@@ -18,30 +18,31 @@ class Blog {
 
         if (!validate) {
 
-            return res.status(409).json({ mensagem: "Impossivel fazer postagem, Id usuário não encontrado" });
+            return res.status(404).json({ mensagem: "Impossivel fazer postagem, Id usuário não encontrado" });
 
-        } else {
-            try {
-
-                const dados = new blogModel({
-                    title,
-                    author,
-                    body,
-                    user: userId
-                });
-
-                await dados.save();
-
-                return res.status(201).json({ menagem: "Post criado com sucesso" })
-
-
-            } catch (error) {
-
-                return res.status(500).json({
-                    mensagem: "Erro ao cadastrar",
-                });
-            }
         }
+      //  console.log(validate)
+        try {
+
+            const dados = new blogModel({
+                title,
+                author,
+                body,
+                user: userId
+            });
+
+            await dados.save();
+
+            return res.status(201).json({ menagem: "Post criado com sucesso" })
+
+
+        } catch (error) {
+
+            return res.status(500).json({
+                mensagem: "Erro ao cadastrar",
+            });
+        }
+
 
 
 

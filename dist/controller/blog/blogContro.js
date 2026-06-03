@@ -20,10 +20,10 @@ class Blog {
         //Criar post
         this.createPost = (req, res) => __awaiter(this, void 0, void 0, function* () {
             const { title, author, body, userId } = req.body;
-            const validate = yield userModel_1.userModel.findOne({ userId });
             if (!mongoose_1.default.Types.ObjectId.isValid(userId)) {
                 return res.status(409).json({ mensagem: "Codigo de usuário inválido" });
             }
+            const validate = yield userModel_1.userModel.findOne({ _id: userId });
             if (!validate) {
                 return res.status(409).json({ mensagem: "Impossivel fazer postagem, Id usuário não encontrado" });
             }

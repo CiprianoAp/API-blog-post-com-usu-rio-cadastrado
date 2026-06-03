@@ -9,11 +9,12 @@ class Blog {
 
         const { title, author, body, userId } = req.body
 
-        const validate = await userModel.findOne({ userId });
 
         if (!mongoose.Types.ObjectId.isValid(userId)) {
             return res.status(409).json({ mensagem: "Codigo de usuário inválido" })
         }
+
+        const validate = await userModel.findOne({ _id: userId });
 
         if (!validate) {
 

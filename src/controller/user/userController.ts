@@ -153,11 +153,14 @@ class User {
                 image
             });
 
-        } catch (error) {
+        } catch (error: any) {
+
+            console.error("ERRO UPLOAD:", error);
 
             return res.status(500).json({
                 message: "Erro no upload",
-                error
+                error: error.message,
+                stack: error.stack
             });
         }
 
